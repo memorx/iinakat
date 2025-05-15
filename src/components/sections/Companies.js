@@ -22,19 +22,21 @@ const Companies = () => {
         <>
             <section className="bg-primary-white text-text-black">
                 {/* SECCIÓN 1: Header */}
-                <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-20">
+                <div className="min-h-[600px] flex items-center">
+                    <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-0">
+                        <div>
+                            <h2 className="text-3xl font-bold text-title-dark mb-6">¿BUSCAS RECLUTAR TALENTO PARA TU EQUIPO?</h2>
+                            <p className="text-lg mb-6">
+                                Encuentra talento excepcional para tu equipo. Nuestra experiencia en reclutamiento 
+                                te brinda los mejores profesionales. Potencia el crecimiento de tu empresa con nosotros.
+                            </p>
+                            <button className="bg-button-green text-white py-2 px-6 rounded-full hover:bg-green-700">
+                                REGÍSTRATE →
+                            </button>
+                        </div>
                     <div>
-                        <h2 className="text-3xl font-bold text-title-dark mb-6">¿BUSCAS RECLUTAR TALENTO PARA TU EQUIPO?</h2>
-                        <p className="text-lg mb-6">
-                            Encuentra talento excepcional para tu equipo. Nuestra experiencia en reclutamiento 
-                            te brinda los mejores profesionales. Potencia el crecimiento de tu empresa con nosotros.
-                        </p>
-                        <button className="bg-button-green text-white py-2 px-6 rounded-full hover:bg-green-700">
-                            REGÍSTRATE →
-                        </button>
+                        <img src={headerImage} alt="Empresas" className="w-full h-[480px] object-contain rounded-lg shadow-lg" />
                     </div>
-                    <div>
-                        <img src={headerImage} alt="Empresas" className="w-full rounded-lg shadow-lg" />
                     </div>
                 </div>
 

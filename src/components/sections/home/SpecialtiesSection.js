@@ -42,7 +42,7 @@ const Specialties = () => {
                     <h2 className="text-3xl font-bold text-title-dark">NUESTRAS ÁREAS DE ESPECIALIDAD</h2>
                     <button
                         onClick={() => navigate('/specialties')}
-                        className="mt-6 bg-button-orange text-white py-2 px-6 rounded-lg hover:bg-orange-700"
+                        className="mt-6 bg-button-orange text-white py-2 px-6 rounded-full hover:bg-orange-700"
                     >
                         DESCUBRE MÁS →
                     </button>

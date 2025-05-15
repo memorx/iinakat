@@ -38,7 +38,7 @@ const WhyInakat = () => {
                         </p>
                         <button
                             onClick={() => navigate('/about')}
-                            className="mt-6 bg-lemon-green text-white py-2 px-6 rounded-lg hover:bg-title-dark font-bold">
+                            className="mt-6 bg-lemon-green text-white py-2 px-6 rounded-full hover:bg-title-dark font-bold">
                                 CONOCE NUESTRO PROCESO →
                         </button>
                     </div>

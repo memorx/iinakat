@@ -24,7 +24,7 @@ const BusinessTalentSection = () => {
                 <div className="container mx-auto flex flex-col md:flex-row justify-center gap-8 relative">
                     {/* Tarjeta Para Empresas */}
                     <div className="bg-button-green p-8 rounded-xl shadow-lg w-full md:w-1/2 relative">
-                        <h2 className="text-white text-2xl font-bold">PARA EMPRESAS</h2>
+                        <h2 className="text-white text-2xl font-bold">PARA <br /> EMPRESAS</h2>
                         <p className="text-white mt-2">
                             ¿En búsqueda de talentos? Registra tu empresa y conoce todo nuestro proceso de selección.
                         </p>
@@ -43,8 +43,8 @@ const BusinessTalentSection = () => {
 
                     {/* Tarjeta Para Talentos */}
                     <div className="bg-custom-beige p-8 rounded-xl shadow-lg w-full md:w-1/2 relative">
-                        <h2 className="text-title-dark text-2xl font-bold">PARA TALENTOS</h2>
-                        <p className="text-text-black mt-2">
+                        <h2 className="text-number-green text-2xl font-bold">PARA <br /> TALENTOS</h2>
+                        <p className="text-number-green mt-2">
                             ¿Buscas empleo? Regístrate, sube tu CV y en breve nos contactaremos contigo.
                         </p>
                         <img

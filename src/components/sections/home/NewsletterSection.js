@@ -13,9 +13,9 @@ const Newsletter = () => {
 
     return (
         <section 
-            className="bg-soft-green text-black py-12 relative"
+            className="bg-soft-green text-black py-16 relative -z-10"
             style={{ backgroundImage: `url(${fondo})`, backgroundSize: "cover", backgroundPosition: "center", }} >
-            <div className="bg-lemon-green text-white px-6 py-6 rounded-lg flex flex-col md:flex-row max-w-xl w-full md:w-auto items-center gap-3 mx-auto justify-center">
+            <div className="bg-lemon-green text-white px-4 py-8 rounded-lg flex flex-col md:flex-row max-w-xl w-full md:w-auto items-center gap-3 mx-auto justify-center">
                 {/* Left Column: Title + Form (same column) */}
                 <div className="flex flex-col w-full md:w-4/3 pr-4">
                     <h2 className="text-2xl md:text-3xl font-bold text-center md:text-left mb-4">

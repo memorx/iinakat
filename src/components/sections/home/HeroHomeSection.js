@@ -25,7 +25,7 @@ const BusinessTalentSection = () => {
                             Expertos en traer profesionales de calidad para tu empresa. <br />
                             ¡Asegura el éxito de tus proyectos hoy!
                         </p>
-                        <button className="mt-6 bg-button-green text-white py-2 px-6 rounded hover:bg-green-700">
+                        <button className="mt-6 bg-button-green text-white py-2 px-6 rounded-full hover:bg-green-700">
                             CONOCE MÁS →
                         </button>
 
@@ -33,19 +33,23 @@ const BusinessTalentSection = () => {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10">
                             <div>
                                 <p className="text-3xl font-bold text-number-green">+2976</p>
-                                <p className="text-title-dark">TALENTOS</p>
+                                <p className="font-bold text-number-green">TALENTOS</p>
+                                <div className="h-[2px] w-[115px] bg-number-green mt-2"></div>
                             </div>
                             <div>
                                 <p className="text-3xl font-bold text-number-green">+100</p>
-                                <p className="text-title-dark">EMPRESAS</p>
+                                <p className="font-bold text-number-green">EMPRESAS</p>
+                                <div className="h-[2px] w-[115px] bg-number-green mt-2"></div>
                             </div>
                             <div>
                                 <p className="text-3xl font-bold text-number-green">+50</p>
-                                <p className="text-title-dark">EXPERTOS</p>
+                                <p className="font-bold text-number-green">EXPERTOS</p>
+                                <div className="h-[2px] w-[115px] bg-number-green mt-2"></div>
                             </div>
                             <div>
                                 <p className="text-3xl font-bold text-number-green">+70</p>
-                                <p className="text-title-dark">PROFESIONES</p>
+                                <p className="font-bold text-number-green">PROFESIONES</p>
+                                <div className="h-[2px] w-[115px] bg-number-green mt-2"></div>
                             </div>
                         </div>
                     </div>

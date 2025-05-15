@@ -3,7 +3,7 @@ import SocialLinks from './SocialLinks';
 
 const ContactForm = () => {
     return (
-        <section className="bg-button-green text-white p-10 pl-9 pr-9 rounded-xl shadow-lg w-full h-full flex flex-col">
+        <section className="bg-button-green text-white p-10 pl-9 pr-9 rounded-3xl shadow-lg w-full h-full flex flex-col">
             <h2 className="text-2xl font-bold">ESCRÍBENOS</h2>
             <p className="mt-2">
                 Contáctanos para impulsar el futuro de tu empresa con talento altamente calificado.
@@ -38,7 +38,7 @@ const ContactForm = () => {
                 <textarea
                     name="mensaje"
                     placeholder="Escribe tu mensaje..."
-                    className="w-full p-3 pr-6 bg-white text-black border border-gray-300 rounded-lg input-field"
+                    className="w-full p-7 pr-6 bg-white text-black border border-gray-300 rounded-xl input-field"
                     required
                 />
 
