@@ -8,7 +8,7 @@ const Talents = () => {
 
     return (
         <>
-            <section className="bg-custom-beige text-text-black py-20">
+            <section className="bg-custom-beige text-text-black pt-20">
                 <HeroTalent />
                 <SearchPositions />
             </section>
