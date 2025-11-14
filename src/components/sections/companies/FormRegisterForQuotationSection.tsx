@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, FormEvent, ChangeEvent } from "react";
+import React, { useState, useRef, FormEvent, ChangeEvent } from 'react';
 
 interface FormData {
   nombre: string;
@@ -24,27 +24,27 @@ interface Errors {
 
 const FormRegisterForQuotationSection = () => {
   const [formData, setFormData] = useState<FormData>({
-    nombre: "",
-    apellidoPaterno: "",
-    apellidoMaterno: "",
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
     identificacion: null,
-    password: "",
-    confirmPassword: "",
-    nombreEmpresa: "",
-    correoEmpresa: "",
-    sitioWeb: "",
-    razonSocial: "",
-    rfc: "",
-    direccionEmpresa: "",
-    documentosConstitucion: null,
+    password: '',
+    confirmPassword: '',
+    nombreEmpresa: '',
+    correoEmpresa: '',
+    sitioWeb: '',
+    razonSocial: '',
+    rfc: '',
+    direccionEmpresa: '',
+    documentosConstitucion: null
   });
 
   const [errors, setErrors] = useState<Errors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
+    type: 'success' | 'error' | null;
     message: string;
-  }>({ type: null, message: "" });
+  }>({ type: null, message: '' });
 
   const fileInputIdRef = useRef<HTMLInputElement>(null);
   const fileInputDocRef = useRef<HTMLInputElement>(null);
@@ -60,7 +60,8 @@ const FormRegisterForQuotationSection = () => {
     /^[A-ZÑ&]{3,4}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[A-Z0-9]{3}$/.test(
       rfc
     );
-  const validatePasswords = () => formData.password === formData.confirmPassword;
+  const validatePasswords = () =>
+    formData.password === formData.confirmPassword;
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -70,39 +71,39 @@ const FormRegisterForQuotationSection = () => {
     const newErrors = { ...errors };
 
     switch (name) {
-      case "nombre":
-      case "apellidoPaterno":
-      case "apellidoMaterno":
+      case 'nombre':
+      case 'apellidoPaterno':
+      case 'apellidoMaterno':
         if (!validateName(value)) {
-          newErrors[name] = "Solo se permiten letras";
+          newErrors[name] = 'Solo se permiten letras';
         } else {
           delete newErrors[name];
         }
         break;
-      case "correoEmpresa":
+      case 'correoEmpresa':
         if (!validateEmail(value)) {
-          newErrors.correoEmpresa = "Correo electrónico inválido";
+          newErrors.correoEmpresa = 'Correo electrónico inválido';
         } else {
           delete newErrors.correoEmpresa;
         }
         break;
-      case "sitioWeb":
+      case 'sitioWeb':
         if (value && !validateURL(value)) {
-          newErrors.sitioWeb = "URL inválida";
+          newErrors.sitioWeb = 'URL inválida';
         } else {
           delete newErrors.sitioWeb;
         }
         break;
-      case "rfc":
+      case 'rfc':
         if (!validateRFC(value)) {
-          newErrors.rfc = "RFC inválido";
+          newErrors.rfc = 'RFC inválido';
         } else {
           delete newErrors.rfc;
         }
         break;
-      case "confirmPassword":
+      case 'confirmPassword':
         if (!validatePasswords()) {
-          newErrors.confirmPassword = "Las contraseñas no coinciden";
+          newErrors.confirmPassword = 'Las contraseñas no coinciden';
         } else {
           delete newErrors.confirmPassword;
         }
@@ -114,103 +115,122 @@ const FormRegisterForQuotationSection = () => {
 
   const handleFileChange = (
     e: ChangeEvent<HTMLInputElement>,
-    fileType: "identificacion" | "documentosConstitucion"
+    fileType: 'identificacion' | 'documentosConstitucion'
   ) => {
     const file = e.target.files?.[0] || null;
     setFormData((prev) => ({
       ...prev,
-      [fileType]: file,
+      [fileType]: file
     }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: "" });
 
-    // Final validation before submitting
-    const formErrors: Errors = {};
-    if (!validateName(formData.nombre))
-      formErrors.nombre = "Solo se permiten letras";
-    if (!validateName(formData.apellidoPaterno))
-      formErrors.apellidoPaterno = "Solo se permiten letras";
-    if (!validateName(formData.apellidoMaterno))
-      formErrors.apellidoMaterno = "Solo se permiten letras";
-    if (!validateEmail(formData.correoEmpresa))
-      formErrors.correoEmpresa = "Correo electrónico inválido";
-    if (formData.sitioWeb && !validateURL(formData.sitioWeb))
-      formErrors.sitioWeb = "URL inválida";
-    if (!validateRFC(formData.rfc)) formErrors.rfc = "RFC inválido";
-    if (!validatePasswords())
-      formErrors.confirmPassword = "Las contraseñas no coinciden";
-
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      setIsSubmitting(false);
+    // Validar que los archivos estén presentes
+    if (!formData.identificacion) {
+      setErrors({
+        ...errors,
+        identificacion: 'La identificación es requerida'
+      });
       return;
     }
 
-    try {
-      // Note: File upload is not implemented yet
-      // TODO: Implement file upload to cloud storage (AWS S3, Vercel Blob, etc.)
-      // For now, we'll submit without file URLs
+    if (!formData.documentosConstitucion) {
+      setErrors({
+        ...errors,
+        documentosConstitucion: 'Los documentos son requeridos'
+      });
+      return;
+    }
 
-      const response = await fetch("/api/company-requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      // 1. Subir identificación
+      const idFormData = new FormData();
+      idFormData.append('file', formData.identificacion);
+
+      const idUploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: idFormData
+      });
+
+      if (!idUploadRes.ok) {
+        throw new Error('Error al subir identificación');
+      }
+
+      const idData = await idUploadRes.json();
+
+      // 2. Subir documentos de constitución
+      const docFormData = new FormData();
+      docFormData.append('file', formData.documentosConstitucion);
+
+      const docUploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: docFormData
+      });
+
+      if (!docUploadRes.ok) {
+        throw new Error('Error al subir documentos');
+      }
+
+      const docData = await docUploadRes.json();
+
+      // 3. Enviar solicitud con las URLs de los archivos
+      const response = await fetch('/api/company-requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nombre: formData.nombre,
           apellidoPaterno: formData.apellidoPaterno,
           apellidoMaterno: formData.apellidoMaterno,
           nombreEmpresa: formData.nombreEmpresa,
           correoEmpresa: formData.correoEmpresa,
-          sitioWeb: formData.sitioWeb || null,
+          sitioWeb: formData.sitioWeb,
           razonSocial: formData.razonSocial,
           rfc: formData.rfc,
           direccionEmpresa: formData.direccionEmpresa,
-          // TODO: Add file upload URLs once implemented
-          // identificacionUrl: uploadedIdUrl,
-          // documentosConstitucionUrl: uploadedDocUrl,
-        }),
+          identificacionUrl: idData.url,
+          documentosConstitucionUrl: docData.url
+        })
       });
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         setSubmitStatus({
-          type: "success",
-          message:
-            "¡Solicitud enviada exitosamente! Nos contactaremos contigo pronto.",
+          type: 'success',
+          message: 'Solicitud enviada exitosamente. Revisaremos tu información.'
         });
-
-        // Reset form
+        // Resetear formulario
         setFormData({
-          nombre: "",
-          apellidoPaterno: "",
-          apellidoMaterno: "",
+          nombre: '',
+          apellidoPaterno: '',
+          apellidoMaterno: '',
           identificacion: null,
-          password: "",
-          confirmPassword: "",
-          nombreEmpresa: "",
-          correoEmpresa: "",
-          sitioWeb: "",
-          razonSocial: "",
-          rfc: "",
-          direccionEmpresa: "",
-          documentosConstitucion: null,
+          password: '',
+          confirmPassword: '',
+          nombreEmpresa: '',
+          correoEmpresa: '',
+          sitioWeb: '',
+          razonSocial: '',
+          rfc: '',
+          direccionEmpresa: '',
+          documentosConstitucion: null
         });
       } else {
-        throw new Error(data.error || "Error al enviar el formulario");
+        throw new Error(data.error || 'Error al enviar solicitud');
       }
     } catch (error) {
+      console.error('Error:', error);
       setSubmitStatus({
-        type: "error",
+        type: 'error',
         message:
           error instanceof Error
             ? error.message
-            : "Error al enviar el formulario. Por favor, intenta de nuevo.",
+            : 'Error al procesar la solicitud'
       });
     } finally {
       setIsSubmitting(false);
@@ -228,9 +248,9 @@ const FormRegisterForQuotationSection = () => {
           {submitStatus.type && (
             <div
               className={`mb-6 p-4 rounded-lg ${
-                submitStatus.type === "success"
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
+                submitStatus.type === 'success'
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-red-100 text-red-800'
               }`}
             >
               {submitStatus.message}
@@ -299,7 +319,7 @@ const FormRegisterForQuotationSection = () => {
                       <input
                         type="file"
                         ref={fileInputIdRef}
-                        onChange={(e) => handleFileChange(e, "identificacion")}
+                        onChange={(e) => handleFileChange(e, 'identificacion')}
                         className="hidden"
                         accept=".pdf,.jpg,.jpeg,.png"
                       />
@@ -315,10 +335,6 @@ const FormRegisterForQuotationSection = () => {
                           Archivo seleccionado: {formData.identificacion.name}
                         </span>
                       )}
-                      <p className="text-xs text-gray-600 mt-1">
-                        Nota: Los archivos no se subirán hasta implementar el
-                        sistema de almacenamiento
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -427,9 +443,7 @@ const FormRegisterForQuotationSection = () => {
                       required
                     />
                     {errors.rfc && (
-                      <span className="text-red-500 text-sm">
-                        {errors.rfc}
-                      </span>
+                      <span className="text-red-500 text-sm">{errors.rfc}</span>
                     )}
                   </div>
                   <div>
@@ -452,7 +466,7 @@ const FormRegisterForQuotationSection = () => {
                       type="file"
                       ref={fileInputDocRef}
                       onChange={(e) =>
-                        handleFileChange(e, "documentosConstitucion")
+                        handleFileChange(e, 'documentosConstitucion')
                       }
                       className="hidden"
                       accept=".pdf,.jpg,.jpeg,.png"
@@ -466,14 +480,10 @@ const FormRegisterForQuotationSection = () => {
                     </button>
                     {formData.documentosConstitucion && (
                       <span className="text-sm text-gray-600 mt-2 block">
-                        Archivo seleccionado:{" "}
+                        Archivo seleccionado:{' '}
                         {formData.documentosConstitucion.name}
                       </span>
                     )}
-                    <p className="text-xs text-gray-600 mt-1">
-                      Nota: Los archivos no se subirán hasta implementar el
-                      sistema de almacenamiento
-                    </p>
                   </div>
                 </div>
               </div>
@@ -486,7 +496,7 @@ const FormRegisterForQuotationSection = () => {
                 disabled={isSubmitting}
                 className="bg-button-orange text-white py-3 px-12 rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? "ENVIANDO..." : "ENVIAR →"}
+                {isSubmitting ? 'ENVIANDO...' : 'ENVIAR →'}
               </button>
               <p className="text-xs mt-2 text-gray-600">
                 *Al dar click en el botón, aceptas nuestros términos y

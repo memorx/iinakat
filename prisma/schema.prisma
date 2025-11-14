@@ -6,31 +6,81 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-model CompanyRequest {
-  id                      Int       @id @default(autoincrement())
-  nombre                  String
-  apellidoPaterno         String
-  apellidoMaterno         String
-  nombreEmpresa           String
-  correoEmpresa           String
-  sitioWeb                String?
-  razonSocial             String
-  rfc                     String
-  direccionEmpresa        String
-  identificacionUrl       String?
-  documentosConstitucionUrl String?
-  status                  String    @default("pending") // pending, approved, rejected
-  createdAt               DateTime  @default(now())
-  updatedAt               DateTime  @updatedAt
+// =============================================
+// MODELO DE USUARIOS
+// =============================================
+model User {
+  id                Int       @id @default(autoincrement())
+  email             String    @unique
+  password          String    // Hasheada con bcrypt
+  nombre            String
+  apellidoPaterno   String?
+  apellidoMaterno   String?
+  role              String    @default("user") // "admin", "company", "talent"
+  isActive          Boolean   @default(true)
+  emailVerified     DateTime?
+  lastLogin         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relación opcional con CompanyRequest
+  companyRequest    CompanyRequest?
+  
+  @@index([email])
+  @@index([role])
+  @@index([isActive])
+}
 
+// =============================================
+// SOLICITUDES DE EMPRESAS
+// =============================================
+model CompanyRequest {
+  id                        Int       @id @default(autoincrement())
+  
+  // Información del representante
+  nombre                    String
+  apellidoPaterno           String
+  apellidoMaterno           String
+  
+  // Información de la empresa
+  nombreEmpresa             String
+  correoEmpresa             String
+  sitioWeb                  String?
+  razonSocial               String
+  rfc                       String    @unique
+  direccionEmpresa          String
+  
+  // Documentos
+  identificacionUrl         String?
+  documentosConstitucionUrl String?
+  
+  // Estado y tracking
+  status                    String    @default("pending") // pending, approved, rejected
+  rejectionReason           String?   // Razón de rechazo
+  
+  // Timestamps
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+  approvedAt                DateTime? // Cuando fue aprobada
+  
+  // Relación con Usuario (se crea cuando se aprueba)
+  userId                    Int?      @unique
+  user                      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
   @@index([status])
   @@index([createdAt])
+  @@index([rfc])
+  @@index([correoEmpresa])
 }
 
+// =============================================
+// MENSAJES DE CONTACTO
+// =============================================
 model ContactMessage {
   id        Int      @id @default(autoincrement())
   nombre    String
@@ -40,4 +90,5 @@ model ContactMessage {
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+  @@index([email])
 }

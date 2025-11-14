@@ -1,66 +1,70 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { authenticateUser } from '@/lib/auth';
+import { validate, loginSchema } from '@/lib/validations';
 
-// TODO: In production, implement proper authentication with NextAuth.js or similar
-// This is a basic placeholder for demo purposes
-
+/**
+ * POST /api/auth/login
+ * Autentica un usuario y establece una cookie con el token
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password } = body;
 
-    // Validate input
-    if (!email || !password) {
+    // Validar datos de entrada
+    const validation = validate(loginSchema, body);
+
+    if (!validation.success) {
       return NextResponse.json(
-        { success: false, error: "Email y contraseña son requeridos" },
+        {
+          success: false,
+          errors: validation.errors
+        },
         { status: 400 }
       );
     }
 
-    // TODO: Replace with actual authentication logic
-    // - Hash password comparison
-    // - Database user lookup
-    // - JWT token generation
-    // - Session management
+    const { email, password } = validation.data;
 
-    // For demo purposes, accepting any credentials
-    // In production, you should:
-    // 1. Look up user in database
-    // 2. Compare hashed passwords
-    // 3. Generate secure session token
-    // 4. Set httpOnly cookie
+    // Autenticar usuario
+    const result = await authenticateUser(email, password);
 
-    // Basic validation for demo
-    if (!email.includes("@")) {
+    if (!result.success) {
       return NextResponse.json(
-        { success: false, error: "Email inválido" },
-        { status: 400 }
+        {
+          success: false,
+          error: result.error
+        },
+        { status: 401 }
       );
     }
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { success: false, error: "Contraseña debe tener al menos 6 caracteres" },
-        { status: 400 }
-      );
-    }
-
-    // TODO: Implement actual authentication
-    // For now, returning success for any valid-looking credentials
-    return NextResponse.json(
+    // Crear respuesta con los datos del usuario
+    const response = NextResponse.json(
       {
         success: true,
-        message: "Login exitoso",
-        user: {
-          email,
-          // In production, return user data from database
-        },
+        message: 'Login exitoso',
+        user: result.user
       },
       { status: 200 }
     );
+
+    // Establecer cookie httpOnly con el token
+    response.cookies.set('auth-token', result.token, {
+      httpOnly: true, // No accesible desde JavaScript (seguridad contra XSS)
+      secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+      sameSite: 'lax', // Protección CSRF
+      maxAge: 60 * 60 * 24 * 7, // 7 días
+      path: '/' // Disponible en todas las rutas
+    });
+
+    return response;
   } catch (error) {
-    console.error("Error in login:", error);
+    console.error('Error in /api/auth/login:', error);
     return NextResponse.json(
-      { success: false, error: "Error al procesar la solicitud" },
+      {
+        success: false,
+        error: 'Error al procesar la solicitud'
+      },
       { status: 500 }
     );
   }
