@@ -195,7 +195,7 @@ async function main() {
 
   const normalUsers = [
     {
-      email: 'carlos.dev@email.com',
+      email: 'carlos.dev@gmail.com',
       password: userPassword,
       nombre: 'Carlos',
       apellidoPaterno: 'Ramírez',
@@ -203,7 +203,7 @@ async function main() {
       role: 'user'
     },
     {
-      email: 'ana.designer@email.com',
+      email: 'ana.designer@gmail.com',
       password: userPassword,
       nombre: 'Ana',
       apellidoPaterno: 'Martínez',
@@ -211,7 +211,7 @@ async function main() {
       role: 'user'
     },
     {
-      email: 'luis.marketing@email.com',
+      email: 'luis.marketing@gmail.com',
       password: userPassword,
       nombre: 'Luis',
       apellidoPaterno: 'González',
@@ -219,7 +219,7 @@ async function main() {
       role: 'user'
     },
     {
-      email: 'maria.rh@email.com',
+      email: 'maria.rh@gmail.com',
       password: userPassword,
       nombre: 'María',
       apellidoPaterno: 'Sánchez',
@@ -227,7 +227,7 @@ async function main() {
       role: 'user'
     },
     {
-      email: 'pedro.junior@email.com',
+      email: 'pedro.junior@gmail.com',
       password: userPassword,
       nombre: 'Pedro',
       apellidoPaterno: 'Jiménez',
@@ -818,134 +818,196 @@ Responsabilidades:
   console.log('     Password: Company123!');
   console.log('     Vacantes: 6 (negocios/finanzas)');
   console.log('\n  👤 USUARIOS NORMALES (Password: User123!):');
-  console.log('     carlos.dev@email.com - Desarrollador');
-  console.log('     ana.designer@email.com - Diseñadora');
-  console.log('     luis.marketing@email.com - Marketing');
-  console.log('     maria.rh@email.com - Recursos Humanos');
-  console.log('     pedro.junior@email.com - Recién Egresado');
+  console.log('     carlos.dev@gmail.com - Desarrollador');
+  console.log('     ana.designer@gmail.com - Diseñadora');
+  console.log('     luis.marketing@gmail.com - Marketing');
+  console.log('     maria.rh@gmail.com - Recursos Humanos');
+  console.log('     pedro.junior@gmail.com - Recién Egresado');
   console.log('\n🚀 Para probar:');
   console.log('   Admin: http://localhost:3000/admin/requests');
   console.log('   Empresa: http://localhost:3000/company/dashboard');
-  console.log('   Usuario: http://localhost:3000/talents\n');
+  console.log('   Usuario: http://localhost:3000/my-applications\n');
 }
 
 async function createSampleApplications() {
   console.log('\n📝 Creando aplicaciones de ejemplo...\n');
 
-  const jobs = await prisma.job.findMany({ take: 12 });
+  const jobs = await prisma.job.findMany({ take: 18 });
 
   if (jobs.length === 0) {
     console.log('⚠️  No hay vacantes, saltando creación de aplicaciones.');
     return;
   }
 
+  // Obtener IDs de los usuarios registrados
+  const carlos = await prisma.user.findUnique({
+    where: { email: 'carlos.dev@gmail.com' }
+  });
+  const ana = await prisma.user.findUnique({
+    where: { email: 'ana.designer@gmail.com' }
+  });
+  const luis = await prisma.user.findUnique({
+    where: { email: 'luis.marketing@gmail.com' }
+  });
+  const maria = await prisma.user.findUnique({
+    where: { email: 'maria.rh@gmail.com' }
+  });
+  const pedro = await prisma.user.findUnique({
+    where: { email: 'pedro.junior@gmail.com' }
+  });
+
   const sampleApplications = [
+    // CARLOS - Desarrollador (3 aplicaciones tech)
     {
-      jobId: jobs[0]?.id,
-      candidateName: 'María González Hernández',
-      candidateEmail: 'maria.gonzalez@email.com',
-      candidatePhone: '+52 81 2345 6789',
-      coverLetter:
-        'Estimado equipo, me dirijo a ustedes con gran entusiasmo para expresar mi interés en la posición. Cuento con amplia experiencia en el área.',
-      status: 'pending'
-    },
-    {
-      jobId: jobs[0]?.id,
+      jobId: jobs[0]?.id, // Desarrollador Full Stack
+      userId: carlos?.id,
       candidateName: 'Carlos Ramírez López',
-      candidateEmail: 'carlos.ramirez@email.com',
-      candidatePhone: '+52 33 8765 4321',
+      candidateEmail: 'carlos.dev@gmail.com',
+      candidatePhone: '+52 81 1234 5678',
       coverLetter:
-        'Tengo 5 años de experiencia en desarrollo de software y me gustaría formar parte de su equipo.',
-      status: 'reviewing'
-    },
-    {
-      jobId: jobs[0]?.id,
-      candidateName: 'Ana Patricia Martínez',
-      candidateEmail: 'ana.martinez@email.com',
-      candidatePhone: '+52 55 1234 5678',
-      coverLetter:
-        'Mi experiencia y habilidades coinciden perfectamente con los requisitos de la posición.',
-      status: 'interviewed'
-    },
-    {
-      jobId: jobs[0]?.id,
-      candidateName: 'Roberto Sánchez García',
-      candidateEmail: 'roberto.sanchez@email.com',
-      candidatePhone: '+52 81 5555 6666',
-      coverLetter: 'Soy el candidato ideal para esta vacante.',
-      status: 'accepted'
-    },
-    {
-      jobId: jobs[1]?.id,
-      candidateName: 'Laura Fernández Torres',
-      candidateEmail: 'laura.fernandez@email.com',
-      candidatePhone: '+52 81 9876 5432',
-      coverLetter:
-        'Me gustaría formar parte de su empresa y aportar mi experiencia.',
+        'Estimado equipo, como desarrollador con 3 años de experiencia en React y Node.js, me entusiasma la oportunidad de unirme a su equipo. He trabajado en proyectos similares y estoy seguro de que puedo aportar valor.',
       status: 'pending'
     },
     {
-      jobId: jobs[1]?.id,
-      candidateName: 'Pedro Jiménez Ruiz',
-      candidateEmail: 'pedro.jimenez@email.com',
-      candidatePhone: '+52 33 5555 6666',
-      coverLetter: 'Quiero el trabajo. Tengo experiencia en el área.',
-      status: 'rejected',
-      notes: 'Aplicación muy básica.'
-    },
-    {
-      jobId: jobs[2]?.id,
-      candidateName: 'Sofía Morales Vega',
-      candidateEmail: 'sofia.morales@email.com',
-      candidatePhone: '+52 55 7777 8888',
+      jobId: jobs[1]?.id, // Ingeniero DevOps
+      userId: carlos?.id,
+      candidateName: 'Carlos Ramírez López',
+      candidateEmail: 'carlos.dev@gmail.com',
+      candidatePhone: '+52 81 1234 5678',
       coverLetter:
-        'Es un placer dirigirme a ustedes para solicitar esta oportunidad.',
-      status: 'pending'
+        'Me interesa mucho esta posición de DevOps. Tengo experiencia con Docker y Kubernetes, y he gestionado infraestructura en AWS.',
+      status: 'reviewing',
+      reviewedAt: new Date()
     },
     {
-      jobId: jobs[2]?.id,
-      candidateName: 'Jorge Alberto Castro',
-      candidateEmail: 'jorge.castro@email.com',
-      candidatePhone: '+52 81 3333 4444',
-      coverLetter: 'Cuento con las competencias necesarias para el puesto.',
-      status: 'reviewing'
-    },
-    {
-      jobId: jobs[3]?.id,
-      candidateName: 'Daniela Reyes Méndez',
-      candidateEmail: 'daniela.reyes@email.com',
-      candidatePhone: '+52 33 9999 0000',
+      jobId: jobs[2]?.id, // Analista de Ciberseguridad
+      userId: carlos?.id,
+      candidateName: 'Carlos Ramírez López',
+      candidateEmail: 'carlos.dev@gmail.com',
+      candidatePhone: '+52 81 1234 5678',
       coverLetter:
-        '¡Hola! Me encantaría trabajar con ustedes en esta posición.',
-      status: 'interviewed',
-      notes: 'Candidata prometedora.'
-    },
-    {
-      jobId: jobs[4]?.id,
-      candidateName: 'Miguel Ángel Torres',
-      candidateEmail: 'miguel.torres@email.com',
-      candidatePhone: '+52 55 2222 3333',
-      coverLetter: 'Adjunto mi curriculum para su consideración.',
-      status: 'pending'
-    },
-    {
-      jobId: jobs[5]?.id,
-      candidateName: 'Gabriela Herrera Silva',
-      candidateEmail: 'gabriela.herrera@email.com',
-      candidatePhone: '+52 55 1111 2222',
-      coverLetter:
-        'Como profesional apasionada por mi trabajo, me gustaría unirme a su equipo.',
+        'Aunque mi experiencia principal es en desarrollo, tengo gran interés en seguridad informática y estoy certificándome en ethical hacking.',
       status: 'accepted',
-      notes: 'Excelente candidata, oferta enviada.'
+      reviewedAt: new Date(),
+      notes: 'Excelente perfil técnico. Oferta enviada.'
+    },
+
+    // ANA - Diseñadora (4 aplicaciones diseño/UX)
+    {
+      jobId: jobs[6]?.id, // Diseñador UX/UI Senior
+      userId: ana?.id,
+      candidateName: 'Ana Martínez García',
+      candidateEmail: 'ana.designer@gmail.com',
+      candidatePhone: '+52 55 9876 5432',
+      coverLetter:
+        'Como diseñadora UX/UI con más de 4 años de experiencia, he trabajado en proyectos para empresas como [empresas]. Domino Figma y tengo un portfolio que me encantaría compartir.',
+      status: 'interviewed',
+      reviewedAt: new Date(),
+      notes: 'Portfolio muy bueno. Programar segunda entrevista.'
     },
     {
-      jobId: jobs[6]?.id,
-      candidateName: 'Ricardo Flores Pérez',
-      candidateEmail: 'ricardo.flores@email.com',
-      candidatePhone: '+52 81 6666 7777',
-      coverLetter: 'Me interesa la vacante y creo que puedo aportar valor.',
+      jobId: jobs[10]?.id, // Diseñador Instruccional
+      userId: ana?.id,
+      candidateName: 'Ana Martínez García',
+      candidateEmail: 'ana.designer@gmail.com',
+      candidatePhone: '+52 55 9876 5432',
+      coverLetter:
+        'Mi experiencia en UX/UI me ha dado una perspectiva única para el diseño instruccional. He creado experiencias de aprendizaje digitales intuitivas.',
+      status: 'pending'
+    },
+    {
+      jobId: jobs[8]?.id, // Community Manager
+      userId: ana?.id,
+      candidateName: 'Ana Martínez García',
+      candidateEmail: 'ana.designer@gmail.com',
+      candidatePhone: '+52 55 9876 5432',
+      coverLetter:
+        'Además de diseño, tengo experiencia gestionando redes sociales para marcas. Me apasiona la comunicación visual.',
       status: 'rejected',
-      notes: 'Perfil no coincide con los requisitos.'
+      reviewedAt: new Date(),
+      notes: 'Perfil más orientado a diseño que a community management.'
+    },
+    {
+      jobId: jobs[4]?.id, // Desarrollador Frontend Freelance
+      userId: ana?.id,
+      candidateName: 'Ana Martínez García',
+      candidateEmail: 'ana.designer@gmail.com',
+      candidatePhone: '+52 55 9876 5432',
+      coverLetter:
+        'Busco proyectos freelance que combinen diseño y desarrollo frontend. Manejo HTML/CSS/JS y frameworks modernos.',
+      status: 'reviewing',
+      reviewedAt: new Date()
+    },
+
+    // LUIS - Marketing (2 aplicaciones marketing)
+    {
+      jobId: jobs[7]?.id, // Especialista en Marketing Digital
+      userId: luis?.id,
+      candidateName: 'Luis González Hernández',
+      candidateEmail: 'luis.marketing@gmail.com',
+      candidatePhone: '+52 33 5555 6666',
+      coverLetter:
+        'Especialista en marketing digital con 3 años de experiencia gestionando campañas en Google Ads y Facebook Ads. He logrado aumentar el ROI en un 150% en mi último proyecto.',
+      status: 'pending'
+    },
+    {
+      jobId: jobs[8]?.id, // Community Manager
+      userId: luis?.id,
+      candidateName: 'Luis González Hernández',
+      candidateEmail: 'luis.marketing@gmail.com',
+      candidatePhone: '+52 33 5555 6666',
+      coverLetter:
+        'Tengo experiencia gestionando comunidades de más de 50k seguidores. Me apasiona crear contenido que conecte con la audiencia.',
+      status: 'reviewing',
+      reviewedAt: new Date()
+    },
+
+    // MARÍA - RRHH (2 aplicaciones RRHH)
+    {
+      jobId: jobs[12]?.id, // Generalista de Recursos Humanos
+      userId: maria?.id,
+      candidateName: 'María Sánchez Torres',
+      candidateEmail: 'maria.rh@gmail.com',
+      candidatePhone: '+52 442 777 8888',
+      coverLetter:
+        'Psicóloga organizacional con 4 años de experiencia en todas las áreas de RRHH. He implementado sistemas de evaluación del desempeño y clima laboral.',
+      status: 'interviewed',
+      reviewedAt: new Date(),
+      notes: 'Muy buena entrevista. Verificar referencias.'
+    },
+    {
+      jobId: jobs[9]?.id, // Psicólogo Organizacional
+      userId: maria?.id,
+      candidateName: 'María Sánchez Torres',
+      candidateEmail: 'maria.rh@gmail.com',
+      candidatePhone: '+52 442 777 8888',
+      coverLetter:
+        'Mi especialidad es psicología organizacional. He diseñado programas de desarrollo de talento y coaching ejecutivo.',
+      status: 'pending'
+    },
+
+    // PEDRO - Junior (2 aplicaciones entry-level)
+    {
+      jobId: jobs[5]?.id, // Customer Success Specialist
+      userId: pedro?.id,
+      candidateName: 'Pedro Jiménez Ruiz',
+      candidateEmail: 'pedro.junior@gmail.com',
+      candidatePhone: '+52 55 3333 4444',
+      coverLetter:
+        'Recién egresado de la carrera de Administración. Busco mi primera oportunidad en atención a clientes. Soy muy responsable y aprendo rápido.',
+      status: 'pending'
+    },
+    {
+      jobId: jobs[3]?.id, // Reclutador IT
+      userId: pedro?.id,
+      candidateName: 'Pedro Jiménez Ruiz',
+      candidateEmail: 'pedro.junior@gmail.com',
+      candidatePhone: '+52 55 3333 4444',
+      coverLetter:
+        'Me interesa el área de reclutamiento. Aunque no tengo experiencia formal, he participado en proyectos universitarios de selección de personal.',
+      status: 'rejected',
+      reviewedAt: new Date(),
+      notes: 'Sin experiencia requerida para el puesto.'
     }
   ];
 
@@ -963,10 +1025,13 @@ async function createSampleApplications() {
     if (!existing) {
       await prisma.application.create({ data: appData });
       created++;
+      console.log(
+        `✅ Aplicación creada: ${appData.candidateName} → ${appData.status}`
+      );
     }
   }
 
-  console.log(`✅ ${created} aplicaciones de ejemplo creadas\n`);
+  console.log(`\n✅ ${created} aplicaciones de ejemplo creadas\n`);
 }
 
 main()
