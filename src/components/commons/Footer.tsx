@@ -1,45 +1,45 @@
-"use client";
+'use client';
 
-import React from "react";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import logoFooter from "@/assets/images/logo/logo-footer.png";
-import { Facebook, Linkedin, Instagram, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import logoFooter from '@/assets/images/logo/logo-footer.png';
+import { Facebook, Linkedin, Instagram, MessageCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const Footer = () => {
   const pathname = usePathname();
 
-  const isHome = pathname === "/";
-  const isTalents = pathname === "/talents";
-  const isAbout = pathname === "/about";
+  const isHome = pathname === '/';
+  const isTalents = pathname === '/talents';
+  const isAbout = pathname === '/about';
 
   const footerBg = isAbout
-    ? "bg-title-dark"
+    ? 'bg-title-dark'
     : isHome || isTalents
-    ? "bg-title-dark"
-    : "bg-number-green";
+    ? 'bg-title-dark'
+    : 'bg-number-green';
 
   const iconBg = isAbout
-    ? "bg-button-green"
+    ? 'bg-button-green'
     : isHome || isTalents
-    ? "bg-custom-beige"
-    : "bg-custom-beige";
+    ? 'bg-custom-beige'
+    : 'bg-custom-beige';
 
   const iconText = isAbout
-    ? ""
+    ? ''
     : isHome
-    ? "text-button-green"
-    : "text-button-green";
+    ? 'text-button-green'
+    : 'text-button-green';
 
   return (
-    <footer className={cn(footerBg, "text-white")}>
+    <footer className={cn(footerBg, 'text-white')}>
       {/* Social Media Bar */}
       <div className="relative">
         <div className="absolute top-[-1.5rem] left-1/2 transform -translate-x-1/2 flex gap-4">
           <div className="flex gap-4">
             <a
-              href="https://wa.me/5200000000"
+              href="https://wa.me/528116312490"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-button-green"
@@ -47,33 +47,34 @@ const Footer = () => {
               <div
                 className={cn(
                   iconBg,
-                  "rounded-full p-3",
+                  'rounded-full p-3',
                   iconText,
-                  "hover:bg-button-green hover:text-white transition"
+                  'hover:bg-button-green hover:text-white transition'
                 )}
               >
                 <MessageCircle className="text-xl" />
               </div>
             </a>
             <a
-              href="https://linkedin.com"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-button-green"
+              className="hover:text-button-green opacity-50 cursor-not-allowed"
+              title="Próximamente"
             >
               <div
                 className={cn(
                   iconBg,
-                  "rounded-full p-3",
+                  'rounded-full p-3',
                   iconText,
-                  "hover:bg-button-green hover:text-white transition"
+                  'hover:bg-button-green hover:text-white transition'
                 )}
               >
                 <Linkedin className="text-xl" />
               </div>
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/inakatmx/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-button-green"
@@ -81,26 +82,27 @@ const Footer = () => {
               <div
                 className={cn(
                   iconBg,
-                  "rounded-full p-3",
+                  'rounded-full p-3',
                   iconText,
-                  "hover:bg-button-green hover:text-white transition"
+                  'hover:bg-button-green hover:text-white transition'
                 )}
               >
                 <Instagram className="text-xl" />
               </div>
             </a>
             <a
-              href="https://facebook.com"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-button-green"
+              className="hover:text-button-green opacity-50 cursor-not-allowed"
+              title="Próximamente"
             >
               <div
                 className={cn(
                   iconBg,
-                  "rounded-full p-3",
+                  'rounded-full p-3',
                   iconText,
-                  "hover:bg-button-green hover:text-white transition"
+                  'hover:bg-button-green hover:text-white transition'
                 )}
               >
                 <Facebook className="text-xl" />
@@ -124,7 +126,7 @@ const Footer = () => {
           <div className="pr-4">
             <div
               className="border-white h-full pr-4"
-              style={{ borderRightWidth: "1px" }}
+              style={{ borderRightWidth: '1px' }}
             >
               <p className="text-button-green font-bold mb-2">OFICINAS</p>
               <div className="grid grid-cols-2 gap-4">
@@ -160,12 +162,12 @@ const Footer = () => {
           <div className="pr-4">
             <div
               className="border-white h-full pr-4"
-              style={{ borderRightWidth: "1px" }}
+              style={{ borderRightWidth: '1px' }}
             >
               <p className="text-button-green font-bold">EMAIL</p>
               <p className="mt-1">info@inakat.com</p>
               <p className="text-button-green font-bold mt-4">TELÉFONO</p>
-              <p className="mt-1">+52 00 00 00 00</p>
+              <p className="mt-1">+52 811 631 2490</p>
             </div>
           </div>
           {/* Column 3: Info */}
