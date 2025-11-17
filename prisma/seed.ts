@@ -511,9 +511,138 @@ Tecnologías: React, Next.js, Vue.js`,
     console.log(`✅ ${created.title} - ${created.company}`);
   }
 
+  await createSampleApplications();
+
   console.log('\n🎉 ¡Seed completado exitosamente!');
   console.log(`   👤 ${admins.length} usuarios admin creados/verificados`);
   console.log(`   💼 ${sampleJobs.length} vacantes de ejemplo creadas`);
+}
+
+async function createSampleApplications() {
+  console.log('\n💼 Creando aplicaciones de ejemplo...\n');
+
+  const jobs = await prisma.job.findMany({ take: 10 });
+
+  if (jobs.length === 0) {
+    console.log('⚠️  No hay vacantes, saltando creación de aplicaciones.');
+    return;
+  }
+
+  const sampleApplications = [
+    {
+      jobId: jobs[0].id,
+      candidateName: 'María González Hernández',
+      candidateEmail: 'maria.gonzalez@email.com',
+      candidatePhone: '81 2345 6789',
+      coverLetter:
+        'Estimado equipo, me dirijo a ustedes con gran entusiasmo...',
+      status: 'pending'
+    },
+    {
+      jobId: jobs[0].id,
+      candidateName: 'Carlos Ramírez López',
+      candidateEmail: 'carlos.ramirez@email.com',
+      candidatePhone: '33 8765 4321',
+      coverLetter: 'Tengo 5 años de experiencia...',
+      status: 'reviewing'
+    },
+    {
+      jobId: jobs[1]?.id || jobs[0].id,
+      candidateName: 'Ana Patricia Martínez',
+      candidateEmail: 'ana.martinez@email.com',
+      candidatePhone: '55 1234 5678',
+      coverLetter: 'Soy Licenciada en Administración...',
+      status: 'interviewed'
+    },
+    {
+      jobId: jobs[1]?.id || jobs[0].id,
+      candidateName: 'Roberto Sánchez García',
+      candidateEmail: 'roberto.sanchez@email.com',
+      candidatePhone: null,
+      coverLetter: null,
+      status: 'pending'
+    },
+    {
+      jobId: jobs[2]?.id || jobs[0].id,
+      candidateName: 'Laura Fernández Torres',
+      candidateEmail: 'laura.fernandez@email.com',
+      candidatePhone: '81 9876 5432',
+      coverLetter: 'Me gustaría formar parte de su empresa...',
+      status: 'accepted'
+    },
+    {
+      jobId: jobs[2]?.id || jobs[0].id,
+      candidateName: 'Pedro Jiménez Ruiz',
+      candidateEmail: 'pedro.jimenez@email.com',
+      candidatePhone: '33 5555 6666',
+      coverLetter: 'Quiero el trabajo. Tengo experiencia.',
+      status: 'rejected',
+      notes: 'Aplicación muy básica.'
+    },
+    {
+      jobId: jobs[3]?.id || jobs[0].id,
+      candidateName: 'Sofía Morales Vega',
+      candidateEmail: 'sofia.morales@email.com',
+      candidatePhone: '55 7777 8888',
+      coverLetter: 'Es un placer dirigirme a ustedes...',
+      status: 'pending'
+    },
+    {
+      jobId: jobs[3]?.id || jobs[0].id,
+      candidateName: 'Jorge Alberto Castro',
+      candidateEmail: 'jorge.castro@email.com',
+      candidatePhone: '81 3333 4444',
+      coverLetter: null,
+      status: 'reviewing'
+    },
+    {
+      jobId: jobs[4]?.id || jobs[0].id,
+      candidateName: 'Daniela Reyes Méndez',
+      candidateEmail: 'daniela.reyes@email.com',
+      candidatePhone: '33 9999 0000',
+      coverLetter: '¡Hola! Me encantaría trabajar con ustedes...',
+      status: 'interviewed',
+      notes: 'Candidata prometedora.'
+    },
+    {
+      jobId: jobs[4]?.id || jobs[0].id,
+      candidateName: 'Miguel Ángel Torres',
+      candidateEmail: 'miguel.torres@email.com',
+      candidatePhone: null,
+      coverLetter: 'Adjunto mi curriculum...',
+      status: 'pending'
+    },
+    {
+      jobId: jobs[5]?.id || jobs[0].id,
+      candidateName: 'Gabriela Herrera Silva',
+      candidateEmail: 'gabriela.herrera@email.com',
+      candidatePhone: '55 1111 2222',
+      coverLetter: 'Como profesional apasionada...',
+      status: 'accepted',
+      notes: 'Excelente candidata, oferta enviada.'
+    },
+    {
+      jobId: jobs[5]?.id || jobs[0].id,
+      candidateName: 'Ricardo Flores Pérez',
+      candidateEmail: 'ricardo.flores@email.com',
+      candidatePhone: '81 6666 7777',
+      coverLetter: 'Me interesa la vacante.',
+      status: 'rejected',
+      notes: 'Perfil no coincide.'
+    }
+  ];
+
+  let created = 0;
+  for (const appData of sampleApplications) {
+    try {
+      await prisma.application.create({ data: appData });
+      created++;
+    } catch (error) {
+      // Ignorar duplicados
+    }
+  }
+
+  console.log(`✅ ${created} aplicaciones de ejemplo creadas\n`);
 }
 
 main()

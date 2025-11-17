@@ -255,17 +255,24 @@ const ApplicationsManagementPanel = () => {
 
         {/* Loading */}
         {isLoading && (
-          <div className="text-center py-20">
+          <div className="text-center py-20 bg-white rounded-lg shadow">
             <p className="text-gray-600">Cargando aplicaciones...</p>
           </div>
         )}
 
-        {/* Lista de aplicaciones */}
+        {/* Sin aplicaciones */}
         {!isLoading && filteredApplications.length === 0 && (
           <div className="text-center py-20 bg-white rounded-lg shadow">
-            <p className="text-gray-600">
-              No hay aplicaciones en esta categoría.
+            <p className="text-gray-600 text-lg font-semibold">
+              {applications.length === 0
+                ? '📭 No hay aplicaciones todavía'
+                : 'No hay aplicaciones en esta categoría'}
             </p>
+            {applications.length === 0 && (
+              <p className="text-gray-500 mt-2">
+                Las aplicaciones de candidatos aparecerán aquí
+              </p>
+            )}
           </div>
         )}
 
