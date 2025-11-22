@@ -1,3 +1,5 @@
+// RUTA: src/components/commons/Navbar.tsx
+
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -110,6 +112,21 @@ const Navbar = () => {
     return user.email.substring(0, 2).toUpperCase();
   };
 
+  const getRoleLabel = () => {
+    if (!user) return '';
+
+    switch (user.role) {
+      case 'admin':
+        return 'Administrador';
+      case 'company':
+        return 'Empresa';
+      case 'user':
+        return 'Usuario';
+      default:
+        return '';
+    }
+  };
+
   const getLinkClass = (path: string) => {
     return pathname === path
       ? 'text-white bg-button-dark-green px-4 py-2 rounded-full cursor-default'
@@ -183,11 +200,7 @@ const Navbar = () => {
                         {user.email}
                       </p>
                       <p className="text-xs text-button-orange font-medium mt-1">
-                        {user.role === 'admin'
-                          ? 'Administrador'
-                          : user.role === 'company'
-                          ? 'Empresa'
-                          : 'Usuario'}
+                        {getRoleLabel()}
                       </p>
                     </div>
 
