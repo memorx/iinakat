@@ -270,6 +270,11 @@ async function main() {
   await seedPricingMatrix();
 
   // =============================================
+  // 2.8 POBLAR ESPECIALIDADES
+  // =============================================
+  await seedSpecialties();
+
+  // =============================================
   // 3. CREAR VACANTES (DISTRIBUIDAS ENTRE EMPRESAS)
   // =============================================
   console.log('\n💼 Creando vacantes de ejemplo...\n');
@@ -1879,6 +1884,200 @@ async function seedPricingMatrix() {
   console.log(
     `   Total: 105 combinaciones (7 perfiles x 5 seniorities x 3 modalidades)\n`
   );
+}
+
+const specialtiesData = [
+  {
+    name: 'Tecnología',
+    slug: 'tecnologia',
+    description: 'Desarrollo de software, infraestructura y sistemas',
+    icon: '💻',
+    color: '#3B82F6',
+    sortOrder: 1,
+    subcategories: [
+      'Desarrollo web',
+      'DevOps',
+      'Infraestructura TI',
+      'Ciberseguridad',
+      'Bases de datos',
+      'Soporte técnico',
+      'Machine learning',
+      'Inteligencia artificial'
+    ]
+  },
+  {
+    name: 'Arquitectura',
+    slug: 'arquitectura',
+    description: 'Diseño arquitectónico y construcción',
+    icon: '🏛️',
+    color: '#8B5CF6',
+    sortOrder: 2,
+    subcategories: [
+      'Diseño arquitectónico',
+      'Urbanismo',
+      'Interiorismo',
+      'Arquitectura sustentable',
+      'BIM',
+      'Supervisión de obra'
+    ]
+  },
+  {
+    name: 'Diseño Gráfico',
+    slug: 'diseno-grafico',
+    description: 'Diseño visual, branding y comunicación gráfica',
+    icon: '🎨',
+    color: '#EC4899',
+    sortOrder: 3,
+    subcategories: [
+      'Diseño UI/UX',
+      'Branding',
+      'Ilustración',
+      'Motion graphics',
+      'Diseño editorial',
+      'Diseño de packaging'
+    ]
+  },
+  {
+    name: 'Producción Audiovisual',
+    slug: 'produccion-audiovisual',
+    description: 'Video, fotografía y producción multimedia',
+    icon: '🎬',
+    color: '#F59E0B',
+    sortOrder: 4,
+    subcategories: [
+      'Fotografía',
+      'Video',
+      'Edición',
+      'Animación',
+      'Producción de contenido',
+      'Streaming'
+    ]
+  },
+  {
+    name: 'Educación',
+    slug: 'educacion',
+    description: 'Enseñanza, pedagogía y formación',
+    icon: '📚',
+    color: '#10B981',
+    sortOrder: 5,
+    subcategories: [
+      'Psicología',
+      'Lingüística',
+      'Pedagogía',
+      'Formación académica',
+      'Diseño instruccional',
+      'E-learning',
+      'Capacitación corporativa'
+    ]
+  },
+  {
+    name: 'Administración de Oficina',
+    slug: 'administracion-oficina',
+    description: 'Gestión administrativa y operaciones',
+    icon: '📋',
+    color: '#6366F1',
+    sortOrder: 6,
+    subcategories: [
+      'Recursos Humanos',
+      'Asistente administrativo',
+      'Gestión documental',
+      'Atención al cliente',
+      'Reclutamiento y selección',
+      'Recepción'
+    ]
+  },
+  {
+    name: 'Finanzas',
+    slug: 'finanzas',
+    description: 'Contabilidad, análisis financiero y tesorería',
+    icon: '💰',
+    color: '#059669',
+    sortOrder: 7,
+    subcategories: [
+      'Contabilidad',
+      'Análisis financiero',
+      'Tesorería',
+      'Auditoría',
+      'Impuestos',
+      'Facturación'
+    ]
+  },
+  {
+    name: 'Marketing',
+    slug: 'marketing',
+    description: 'Marketing digital, comunicación y publicidad',
+    icon: '📢',
+    color: '#EF4444',
+    sortOrder: 8,
+    subcategories: [
+      'Marketing digital',
+      'SEO/SEM',
+      'Community manager',
+      'Publicidad',
+      'Email marketing',
+      'Growth hacking'
+    ]
+  },
+  {
+    name: 'Ingeniería',
+    slug: 'ingenieria',
+    description: 'Ingeniería industrial, mecánica y electrónica',
+    icon: '⚙️',
+    color: '#78716C',
+    sortOrder: 9,
+    subcategories: [
+      'Mecatrónica',
+      'Electrónica',
+      'Automatización',
+      'Proyectos industriales',
+      'Diseño de producto',
+      'I+D',
+      'Control de calidad'
+    ]
+  },
+  {
+    name: 'Salud',
+    slug: 'salud',
+    description: 'Salud, bienestar y ciencias de la vida',
+    icon: '🏥',
+    color: '#DC2626',
+    sortOrder: 10,
+    subcategories: [
+      'Psicología clínica',
+      'Nutrición',
+      'Enfermería',
+      'Orientación familiar',
+      'Educación en salud',
+      'Medicina ocupacional'
+    ]
+  }
+];
+
+async function seedSpecialties() {
+  console.log('🌱 Seeding specialties...');
+
+  for (const specialty of specialtiesData) {
+    const existing = await prisma.specialty.findUnique({
+      where: { name: specialty.name }
+    });
+
+    if (existing) {
+      console.log(
+        `  ⏭️  Specialty "${specialty.name}" already exists, updating...`
+      );
+      await prisma.specialty.update({
+        where: { name: specialty.name },
+        data: specialty
+      });
+    } else {
+      console.log(`  ✅ Creating specialty "${specialty.name}"`);
+      await prisma.specialty.create({
+        data: specialty
+      });
+    }
+  }
+
+  console.log('✅ Specialties seeded successfully!');
 }
 
 // =============================================

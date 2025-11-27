@@ -367,3 +367,41 @@ model Experience {
   @@index([fechaInicio])
 }
 
+// =============================================
+// ESPECIALIDADES/PERFILES (CRUD Admin)
+// =============================================
+model Specialty {
+  id            Int       @id @default(autoincrement())
+  
+  // Nombre del perfil (ej: "Tecnología", "Diseño Gráfico")
+  name          String    @unique
+  
+  // Slug para URLs (ej: "tecnologia", "diseno-grafico")
+  slug          String    @unique
+  
+  // Descripción opcional
+  description   String?
+  
+  // Icono (nombre de Lucide icon o emoji)
+  icon          String?
+  
+  // Color para UI (hex)
+  color         String?   @default("#2b5d62")
+  
+  // Subcategorías (JSON array de strings)
+  subcategories String[]  @default([])
+  
+  // Orden de aparición
+  sortOrder     Int       @default(0)
+  
+  // Estado
+  isActive      Boolean   @default(true)
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([isActive])
+  @@index([sortOrder])
+  @@index([slug])
+}
