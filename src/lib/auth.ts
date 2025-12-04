@@ -1,3 +1,4 @@
+// RUTA: src/lib/auth.ts
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from './prisma';
@@ -82,7 +83,9 @@ export async function verifyPassword(
  * @returns Token JWT
  */
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign(payload, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_IN
+  } as jwt.SignOptions);
 }
 
 /**

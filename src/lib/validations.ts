@@ -1,3 +1,4 @@
+// RUTA: src/lib/validations.ts
 import { z } from 'zod';
 
 // =============================================
@@ -90,7 +91,7 @@ export function validate<T>(
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        errors: error.errors.map((err) => ({
+        errors: error.issues.map((err) => ({
           field: err.path.join('.'),
           message: err.message
         }))

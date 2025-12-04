@@ -1,3 +1,4 @@
+// RUTA: src/components/sections/companies/FormRegisterForQuotationSection.tsx
 'use client';
 
 import React, { useState, useRef, FormEvent, ChangeEvent } from 'react';
@@ -173,6 +174,11 @@ const FormRegisterForQuotationSection = () => {
     setSubmitStatus({ type: null, message: '' });
 
     try {
+      // Verificación de seguridad para TypeScript (ya validado arriba)
+      if (!formData.identificacion || !formData.documentosConstitucion) {
+        throw new Error('Archivos requeridos no encontrados');
+      }
+
       const idFormData = new FormData();
       idFormData.append('file', formData.identificacion);
 
