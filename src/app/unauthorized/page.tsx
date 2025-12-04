@@ -37,7 +37,7 @@ function UnauthorizedContent() {
 
           <Link href="/">
             <button className="w-full bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 font-medium">
-              Ir al Inicio
+              Ir al inicio
             </button>
           </Link>
         </div>
